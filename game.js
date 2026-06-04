@@ -450,6 +450,7 @@ window.showRanking = async function () {
     .from("scores")
     .select("nombre, intentos, created_at")
     .order("intentos", { ascending: true })
+    .order("created_at", { ascending: true })
     .limit(100);
 
   if (error || !data) {

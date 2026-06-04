@@ -2,8 +2,9 @@
 // SUPABASE CONFIG
 // ------------------------------------------------------------
 const SUPABASE_URL = "https://nlvxhrrdffpajtffqksk.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sdnhocnJkZmZwYWp0ZmZxa3NrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MjcyNTEsImV4cCI6MjA5NjEwMzI1MX0.yngXa3me5TCuKgSqksy5ueqG-piV-hJGzn6AZbpIB30";
-const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sdnhocnJkZmZwYWp0ZmZxa3NrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MjcyNTEsImV4cCI6MjA5NjEwMzI1MX0.yngXa3me5TCuKgSqksy5ueqG-piV-hJGzn6AZbpIB30";
+const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ------------------------------------------------------------
 // IMAGENES Y RECURSOS
@@ -19,19 +20,31 @@ const PLAYERS = [
   { id: "montiel", name: "Montiel", img: "img/MONTIEL-FRENTE.png" },
   { id: "cuti", name: "Cuti", img: "img/CUTI-FRENTE.png" },
   { id: "otamendi", name: "Otamendi", img: "img/OTAMENDI-FRENTE.png" },
-  { id: "lisandro", name: "L. Martínez", img: "img/LISANDRO-MARTINEZ-FRENTE.png" },
+  {
+    id: "lisandro",
+    name: "L. Martínez",
+    img: "img/LISANDRO-MARTINEZ-FRENTE.png",
+  },
   { id: "balerdi", name: "Balerdi", img: "img/BALERDI-FRENTE.png" },
   { id: "medina", name: "F. Medina", img: "img/FACUNDO-MEDINA-FRENTE.png" },
   { id: "depaul", name: "De Paul", img: "img/DE-PAUL-FRENTE.png" },
   { id: "enzo", name: "Enzo", img: "img/ENZO-FERNANDEZ-FRENTE.png" },
-  { id: "macallister", name: "Mac Allister", img: "img/Alexis-MacAllister-FRENTE.png" },
+  {
+    id: "macallister",
+    name: "Mac Allister",
+    img: "img/Alexis-MacAllister-FRENTE.png",
+  },
   { id: "locelso", name: "Lo Celso", img: "img/LO-CELSO-FRENTE.png" },
   { id: "palacios", name: "Palacios", img: "img/EXEQUIEL-PALACIOS-FRENTE.png" },
   { id: "paredes", name: "Paredes", img: "img/PAREDES-FRENTE.png" },
   { id: "messi", name: "Messi", img: "img/MESSI-FRENTE.png" },
   { id: "lautaro", name: "Lautaro", img: "img/LAUTARO-MARTINEZ-FRENTE.png" },
   { id: "julian", name: "J. Álvarez", img: "img/JULIAN-ALVAREZ-FRENTE.png" },
-  { id: "nicogonzalez", name: "N. González", img: "img/NICO-GONZALEZ-FRENTE.png" },
+  {
+    id: "nicogonzalez",
+    name: "N. González",
+    img: "img/NICO-GONZALEZ-FRENTE.png",
+  },
   { id: "flaco", name: "Flaco López", img: "img/FLACO-LOPEZ-FRENTE.png" },
   { id: "simeone", name: "Simeone", img: "img/GIULIANO-SIMEONE-FRENTE.png" },
   { id: "nicopaz", name: "Nico Paz", img: "img/NICO-PAZ-FRENTE.png" },
@@ -39,7 +52,8 @@ const PLAYERS = [
   { id: "barco", name: "Barco", img: "img/VALENTIN-BARCO-FRENTE.png" },
 ];
 
-if (PLAYERS.length !== 26) console.warn("Cantidad de jugadores:", PLAYERS.length);
+if (PLAYERS.length !== 26)
+  console.warn("Cantidad de jugadores:", PLAYERS.length);
 
 // Variables globales del juego
 let cards = [];
@@ -119,7 +133,9 @@ function animateShuffle(container) {
 
   function doRound() {
     if (round >= rounds) {
-      setTimeout(() => { locked = false; }, 100);
+      setTimeout(() => {
+        locked = false;
+      }, 100);
       return;
     }
 
@@ -237,7 +253,8 @@ window.closeWinModal = function () {
 window.saveScore = async function () {
   const nombre = document.getElementById("player-name").value.trim();
   if (!nombre) {
-    document.getElementById("save-feedback").textContent = "Escribí tu nombre primero.";
+    document.getElementById("save-feedback").textContent =
+      "Escribí tu nombre primero.";
     return;
   }
 
@@ -245,16 +262,18 @@ window.saveScore = async function () {
   btn.disabled = true;
   document.getElementById("save-feedback").textContent = "Guardando...";
 
-  const { error } = await sbClient
+  const { error } = await supabase
     .from("scores")
     .insert([{ nombre, intentos: tries }]);
 
   if (error) {
-    document.getElementById("save-feedback").textContent = "Error al guardar. Intentá de nuevo.";
+    document.getElementById("save-feedback").textContent =
+      "Error al guardar. Intentá de nuevo.";
     btn.disabled = false;
     console.error(error);
   } else {
-    document.getElementById("save-feedback").textContent = "✅ ¡Puntaje guardado!";
+    document.getElementById("save-feedback").textContent =
+      "✅ ¡Puntaje guardado!";
     setTimeout(() => {
       document.getElementById("win-overlay").style.display = "none";
       showRanking();
@@ -266,33 +285,37 @@ window.showRanking = async function () {
   document.getElementById("ranking-overlay").style.display = "flex";
   document.getElementById("ranking-list").innerHTML = "Cargando...";
 
-  const { data, error } = await sbClient
+  const { data, error } = await supabase
     .from("scores")
     .select("nombre, intentos, created_at")
     .order("intentos", { ascending: true })
     .limit(15);
 
   if (error || !data) {
-    document.getElementById("ranking-list").innerHTML = "No se pudo cargar el ranking.";
+    document.getElementById("ranking-list").innerHTML =
+      "No se pudo cargar el ranking.";
     return;
   }
 
   if (data.length === 0) {
-    document.getElementById("ranking-list").innerHTML = "<p>Aún no hay puntajes. ¡Sé el primero!</p>";
+    document.getElementById("ranking-list").innerHTML =
+      "<p>Aún no hay puntajes. ¡Sé el primero!</p>";
     return;
   }
 
   const medals = ["🥇", "🥈", "🥉"];
-  const rows = data.map((row, i) => {
-    const medal = medals[i] || `${i + 1}.`;
-    const fecha = new Date(row.created_at).toLocaleDateString("es-AR");
-    return `<div class="rank-row">
+  const rows = data
+    .map((row, i) => {
+      const medal = medals[i] || `${i + 1}.`;
+      const fecha = new Date(row.created_at).toLocaleDateString("es-AR");
+      return `<div class="rank-row">
       <span class="rank-pos">${medal}</span>
       <span class="rank-name">${escapeHtml(row.nombre)}</span>
       <span class="rank-score">${row.intentos} intentos</span>
       <span class="rank-date">${fecha}</span>
     </div>`;
-  }).join("");
+    })
+    .join("");
 
   document.getElementById("ranking-list").innerHTML = rows;
 };
@@ -312,12 +335,16 @@ window.addEventListener("DOMContentLoaded", () => {
   initGame();
 });
 
-document.addEventListener("error", (e) => {
-  if (e.target.tagName === "IMG") {
-    const img = e.target;
-    if (img.src && !img.src.includes("DORSO")) {
-      img.style.objectFit = "contain";
-      img.style.background = "#2c3e44";
+document.addEventListener(
+  "error",
+  (e) => {
+    if (e.target.tagName === "IMG") {
+      const img = e.target;
+      if (img.src && !img.src.includes("DORSO")) {
+        img.style.objectFit = "contain";
+        img.style.background = "#2c3e44";
+      }
     }
-  }
-}, true);
+  },
+  true,
+);

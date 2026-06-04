@@ -380,6 +380,7 @@ function showWinModal() {
     `Lo lograste en ${tries} intento${tries !== 1 ? "s" : ""}. ¡Guardá tu puntaje!`;
   document.getElementById("player-name").value = "";
   document.getElementById("save-feedback").textContent = "";
+  document.getElementById("btn-save-score").disabled = false;
   document.getElementById("win-overlay").style.display = "flex";
   setTimeout(() => document.getElementById("player-name").focus(), 100);
 }

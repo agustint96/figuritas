@@ -394,6 +394,20 @@ window.saveScore = async function () {
     return;
   }
 
+  // Validación anti-trampa: mínimo teórico = 9 pares, máximo razonable = 999
+  const MIN_TRIES = 9; // imposible ganar en menos de 9 intentos (9 pares)
+  const MAX_TRIES = 999;
+  if (tries < MIN_TRIES || tries > MAX_TRIES || !Number.isInteger(tries)) {
+    document.getElementById("save-feedback").textContent = "Puntaje inválido.";
+    return;
+  }
+
+  // Verificar que realmente se ganó la partida (9 parejas encontradas)
+  if (matched !== 9) {
+    document.getElementById("save-feedback").textContent = "Puntaje inválido.";
+    return;
+  }
+
   const btn = document.getElementById("btn-save-score");
   btn.disabled = true;
   document.getElementById("save-feedback").textContent = "Guardando...";

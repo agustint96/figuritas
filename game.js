@@ -442,7 +442,8 @@ window.saveScore = async function () {
 
 window.showRanking = async function () {
   document.getElementById("ranking-overlay").style.display = "flex";
-  document.getElementById("ranking-list").innerHTML = "Cargando...";
+  document.getElementById("ranking-list").innerHTML =
+    "<p style='color: white;'>Cargando...</p>";
 
   const { data, error } = await sbClient
     .from("scores")

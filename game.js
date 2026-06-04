@@ -2,8 +2,9 @@
 // SUPABASE CONFIG
 // ------------------------------------------------------------
 const SUPABASE_URL = "https://nlvxhrrdffpajtffqksk.supabase.co";
-const SUPABASE_KEY = "sb_publishable_U5Re_Yb46fHiJh43C4ltFg_TaSURE38";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sdnhocnJkZmZwYWp0ZmZxa3NrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MjcyNTEsImV4cCI6MjA5NjEwMzI1MX0.yngXa3me5TCuKgSqksy5ueqG-piV-hJGzn6AZbpIB30";
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ------------------------------------------------------------
 // IMAGENES Y RECURSOS

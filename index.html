@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Figuritas - Encontrá las parejas</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <header class="game-header">
+      <div class="header-title">
+        <h1>Encontra las parejas</h1>
+      </div>
+      <div class="header-stats">
+        <div class="stat">Intentos: <span id="tries">0</span></div>
+        <div class="stat">Parejas: <span id="pairs">0</span> / 9</div>
+        <button id="btn-restart" onclick="initGame()">Nueva partida</button>
+        <button id="btn-ranking" onclick="showRanking()">🏆 Ranking</button>
+      </div>
+    </header>
+
+    <div id="grid"></div>
+
+    <!-- Modal de victoria + guardar score -->
+    <div id="win-overlay" style="display: none">
+      <div id="win-modal">
+        <div id="win-title">¡Ganaste! 🎉<br />¡Vamos Argentina!</div>
+        <p id="win-score-text"></p>
+        <input
+          id="player-name"
+          type="text"
+          maxlength="20"
+          placeholder="Tu nombre o apodo"
+          autocomplete="off"
+        />
+        <button id="btn-save-score" onclick="saveScore()">
+          Guardar puntaje
+        </button>
+        <button id="btn-skip" onclick="closeWinModal()">Jugar de nuevo</button>
+        <div id="save-feedback"></div>
+      </div>
+    </div>
+
+    <!-- Modal de ranking -->
+    <div id="ranking-overlay" style="display: none">
+      <div id="ranking-modal">
+        <h2>🏆 Mejores puntajes</h2>
+        <div id="ranking-list">Cargando...</div>
+        <button onclick="closeRanking()">Cerrar</button>
+      </div>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+</html>

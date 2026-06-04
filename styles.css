@@ -10,7 +10,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  font-family: "Oxanium", "Segoe UI", system-ui, sans-serif;
 }
 
 .game-header {
@@ -34,7 +34,7 @@ body {
 
 h1 {
   font-size: 1.5rem;
-  color: #ffffff;
+  color: #95c8ee;
   font-weight: 600;
   margin: 0;
   white-space: nowrap;
@@ -70,40 +70,58 @@ h1 {
 #btn-restart:hover,
 #btn-ranking:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.9);
+  border-color: #95c8ee;
 }
+#btn-ranking:hover {
+  background: rgba(255, 188, 66, 0.08);
 
+  border-color: rgba(255, 188, 66, 0.7);
+}
 #grid {
   display: grid;
-  grid-template-columns: repeat(6, 140px);
-  grid-auto-rows: 140px;
+  grid-template-columns: repeat(6, 155px);
+  grid-auto-rows: 155px;
   gap: 16px 20px;
   padding: 30px 40px;
-  margin: 0 auto;
+  margin: auto;
 }
 
 .card-slot {
-  width: 140px;
-  height: 140px;
+  width: 155px;
+  height: 155px;
   display: flex;
   align-items: center;
   justify-content: center;
   justify-items: center;
 }
 
+#match-footer {
+  text-align: center;
+  min-height: 28px;
+  padding: 10px 0 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fefdfe;
+  letter-spacing: 0.3px;
+}
+
 .card-wrap {
-  width: 140px;
-  height: 140px;
+  width: 155px;
+  height: 155px;
   cursor: pointer;
-  perspective: 800px;
   transition:
-    transform 0.25s ease,
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     opacity 0.25s ease;
   transform: rotate(var(--rot, 0deg));
 }
 
-.card-wrap:hover {
-  transform: rotate(0deg) scale(1.05);
+.card-wrap:not(.matched):hover {
+  transform: rotate(0deg) scale(1.05) translateY(-4px) !important;
+  z-index: 10;
+}
+
+.card-wrap.hovered {
+  transform: rotate(0deg) scale(1.05) translateY(-4px) !important;
   z-index: 10;
 }
 
@@ -187,6 +205,7 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  position: relative;
 }
 
 #win-title {
@@ -223,6 +242,15 @@ h1 {
 
 #player-name::placeholder {
   color: rgba(255, 255, 255, 0.35);
+}
+
+#btn-win-close {
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s;
+}
+
+#btn-win-close:hover {
+  color: #ffbc42;
 }
 
 #btn-save-score {

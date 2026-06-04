@@ -1,7 +1,7 @@
 // DEBUG: ver si supabase ya existe
 console.log("supabase ya existe?", typeof supabase);
 console.log("window.supabase ya existe?", typeof window.supabase);
-// 
+//
 
 const SUPABASE_URL = "https://nlvxhrrdffpajtffqksk.supabase.co";
 const SUPABASE_KEY =
@@ -62,8 +62,99 @@ let cards = [];
 let flipped = [];
 let matched = 0;
 let tries = 0;
-let locked = false;
+let misses = 0;
 let timeouts = [];
+
+// ------------------------------------------------------------
+// SONIDOS
+// ------------------------------------------------------------
+let audioStarted = false;
+
+async function startAudio() {
+  if (!audioStarted) {
+    await Tone.start();
+    audioStarted = true;
+  }
+}
+
+// Vibráfono sintético compartido
+let _piano = null;
+
+async function getPiano() {
+  await startAudio();
+  if (!_piano) {
+    const vibrato = new Tone.Vibrato({
+      frequency: 4,
+      depth: 0.1,
+    }).toDestination();
+    _piano = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: "sine" },
+      envelope: { attack: 0.005, decay: 0.8, sustain: 0.1, release: 0.6 },
+      volume: -42,
+    }).connect(vibrato);
+  }
+  return _piano;
+}
+
+// Dar vuelta carta: primera carta = C5, segunda carta = B4
+function playFlip(note) {
+  getPiano().then((piano) => {
+    piano.triggerAttackRelease(note, "16n");
+  });
+}
+
+// Pareja encontrada: alterna entre terminar en C5 y D5
+function playMatch() {
+  const lastNote = matched % 2 === 0 ? "C5" : "D5";
+  getPiano().then((piano) => {
+    [
+      { note: "C5", delay: 0 },
+      { note: "B4", delay: 220 },
+      { note: "C5", delay: 440 },
+      { note: "B4", delay: 660 },
+      { note: lastNote, delay: 980 },
+    ].forEach(({ note, delay }) =>
+      setTimeout(() => piano.triggerAttackRelease(note, "32n"), delay),
+    );
+  });
+}
+
+// No coinciden: ciclo Am Am Dm Dm Am E (se repite)
+function playMismatch() {
+  const chords = [
+    ["A3", "C4", "E4"], // Am grave
+    ["A3", "C4", "E4"], // Am grave
+    ["D4", "F4", "A4"], // Dm octava 4
+    ["D4", "F4", "A4"], // Dm octava 4
+    ["E2", "G#2", "B2"], // E mayor
+    ["E2", "G#2", "B2"], // E mayor
+    ["A3", "C4", "E4"], // Am
+  ];
+  const chord = chords[misses % chords.length];
+  misses++;
+  getPiano().then((piano) => {
+    chord.forEach((note, i) =>
+      setTimeout(() => piano.triggerAttackRelease(note, "32n"), i * 30),
+    );
+  });
+}
+
+// Ganar partida: E F E D C B A
+function playWin() {
+  getPiano().then((piano) => {
+    [
+      { note: "E4", delay: 0 },
+      { note: "F4", delay: 160 },
+      { note: "E4", delay: 320 },
+      { note: "D4", delay: 480 },
+      { note: "C4", delay: 680 },
+      { note: "B3", delay: 900 },
+      { note: "A3", delay: 1140 },
+    ].forEach(({ note, delay }) =>
+      setTimeout(() => piano.triggerAttackRelease(note, "32n"), delay),
+    );
+  });
+}
 
 function clearTimeouts() {
   for (let id of timeouts) clearTimeout(id);
@@ -81,6 +172,7 @@ function shuffleArray(arr) {
 window.initGame = function () {
   clearTimeouts();
   locked = false;
+  misses = 0;
   matched = 0;
   tries = 0;
   flipped = [];
@@ -119,6 +211,14 @@ window.initGame = function () {
     wrapDiv.addEventListener("click", (e) => {
       e.stopPropagation();
       onCardClick(wrapDiv, positionIdx);
+    });
+
+    wrapDiv.addEventListener("mouseenter", () => {
+      if (!wrapDiv.classList.contains("matched"))
+        wrapDiv.classList.add("hovered");
+    });
+    wrapDiv.addEventListener("mouseleave", () => {
+      wrapDiv.classList.remove("hovered");
     });
 
     slotDiv.appendChild(wrapDiv);
@@ -182,14 +282,40 @@ function handleMatch(aWrap, bWrap, aIdx, bIdx) {
   const timeoutId = setTimeout(() => {
     aWrap.classList.add("matched");
     bWrap.classList.add("matched");
+    playMatch();
 
     matched++;
     document.getElementById("pairs").textContent = matched;
     flipped = [];
     locked = false;
 
+    const playerName = cards[aIdx].name;
+    const footer = document.getElementById("match-footer");
+    footer.innerHTML = "";
+
+    if (window._matchTyped) {
+      window._matchTyped.destroy();
+    }
+
+    window._matchTyped = new Typed(footer, {
+      strings: [`Encontraste a ${playerName} :)`],
+      typeSpeed: 38,
+      showCursor: false,
+      onComplete: () => {
+        setTimeout(() => {
+          footer.style.transition = "opacity 0.6s";
+          footer.style.opacity = "0";
+          setTimeout(() => {
+            footer.style.opacity = "";
+            footer.style.transition = "";
+            footer.innerHTML = "";
+          }, 650);
+        }, 2200);
+      },
+    });
+
     if (matched === 9) {
-      showWinModal();
+      setTimeout(showWinModal, 500);
     }
   }, 300);
 
@@ -200,6 +326,7 @@ function handleMismatch(aWrap, bWrap) {
   const timeoutId = setTimeout(() => {
     if (aWrap && aWrap.classList) aWrap.classList.remove("flipped");
     if (bWrap && bWrap.classList) bWrap.classList.remove("flipped");
+    playMismatch();
     flipped = [];
     locked = false;
   }, 850);
@@ -214,6 +341,7 @@ function onCardClick(wrapElement, idx) {
   if (flipped.length >= 2) return;
 
   wrapElement.classList.add("flipped");
+  playFlip(flipped.length === 0 ? "C5" : "B4");
   flipped.push({ wrap: wrapElement, idx: idx });
 
   if (flipped.length === 2) {
@@ -239,6 +367,7 @@ function onCardClick(wrapElement, idx) {
 // ------------------------------------------------------------
 
 function showWinModal() {
+  playWin();
   document.getElementById("win-score-text").textContent =
     `Lo lograste en ${tries} intento${tries !== 1 ? "s" : ""}. ¡Guardá tu puntaje!`;
   document.getElementById("player-name").value = "";
@@ -249,7 +378,12 @@ function showWinModal() {
 
 window.closeWinModal = function () {
   document.getElementById("win-overlay").style.display = "none";
-  initGame();
+  // Mostrar todas las cartas dadas vuelta y grises
+  const wraps = document.querySelectorAll(".card-wrap");
+  wraps.forEach((w) => {
+    w.classList.add("flipped");
+    w.classList.add("matched");
+  });
 };
 
 window.saveScore = async function () {

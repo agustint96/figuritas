@@ -4,13 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Figuritas - Encontrá las parejas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.js"></script>
   </head>
   <body>
     <header class="game-header">
       <div class="header-title">
-        <h1>Encontra las parejas</h1>
+        <h1 id="game-title">Figuritas - Encontrá las parejas</h1>
       </div>
       <div class="header-stats">
         <div class="stat">Intentos: <span id="tries">0</span></div>
@@ -21,11 +29,30 @@
     </header>
 
     <div id="grid"></div>
+    <div id="match-footer"></div>
 
     <!-- Modal de victoria + guardar score -->
     <div id="win-overlay" style="display: none">
       <div id="win-modal">
-        <div id="win-title">¡Ganaste! 🎉<br />¡Vamos Argentina!</div>
+        <button
+          onclick="closeWinModal()"
+          id="btn-win-close"
+          style="
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            background: transparent;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+          "
+          aria-label="Cerrar"
+        >
+          &#x2715;
+        </button>
+        <div id="win-title">¡Ganaste! 🎉</div>
         <p id="win-score-text"></p>
         <input
           id="player-name"

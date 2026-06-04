@@ -1,3 +1,8 @@
+// DEBUG: ver si supabase ya existe
+console.log("supabase ya existe?", typeof supabase);
+console.log("window.supabase ya existe?", typeof window.supabase);
+// 
+
 const SUPABASE_URL = "https://nlvxhrrdffpajtffqksk.supabase.co";
 const SUPABASE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sdnhocnJkZmZwYWp0ZmZxa3NrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MjcyNTEsImV4cCI6MjA5NjEwMzI1MX0.yngXa3me5TCuKgSqksy5ueqG-piV-hJGzn6AZbpIB30";

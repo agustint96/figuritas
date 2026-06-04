@@ -98,7 +98,7 @@ async function getPiano() {
     _piano = new Tone.PolySynth(Tone.Synth, {
       oscillator: { type: "sine" },
       envelope: { attack: 0.005, decay: 0.8, sustain: 0.1, release: 0.6 },
-      volume: -28,
+      volume: -29,
     }).connect(vibrato);
   }
   return _piano;

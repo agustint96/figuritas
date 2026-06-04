@@ -98,7 +98,7 @@ async function getPiano() {
     _piano = new Tone.PolySynth(Tone.Synth, {
       oscillator: { type: "sine" },
       envelope: { attack: 0.005, decay: 0.8, sustain: 0.1, release: 0.6 },
-      volume: -38,
+      volume: -31,
     }).connect(vibrato);
   }
   return _piano;
@@ -134,9 +134,9 @@ function playMismatch() {
     ["A3", "C4", "E4"], // Am grave
     ["D4", "F4", "A4"], // Dm octava 4
     ["D4", "F4", "A4"], // Dm octava 4
-    ["E3", "G#3", "B3", "D3"], // E mayor
-    ["E3", "G#3", "B3", "D3"], // E mayor
-    ["A3", "C4", "E4"], // Am
+    ["B3", "D3", "F3", "A4"], // B semidisminuido
+    ["E3", "G#3", "B3", "D4"], // E mayor
+    ["A3", "C4", "E4", "A4"], // Am
   ];
   const chord = chords[misses % chords.length];
   misses++;

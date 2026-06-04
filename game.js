@@ -28,9 +28,13 @@ const PLAYERS = [
     img: "img/LISANDRO-MARTINEZ-FRENTE.png",
   },
   { id: "balerdi", name: "Balerdi", img: "img/BALERDI-FRENTE.png" },
-  { id: "medina", name: "F. Medina", img: "img/FACUNDO-MEDINA-FRENTE.png" },
+  {
+    id: "medina",
+    name: "Facundo Medina",
+    img: "img/FACUNDO-MEDINA-FRENTE.png",
+  },
   { id: "depaul", name: "De Paul", img: "img/DE-PAUL-FRENTE.png" },
-  { id: "enzo", name: "Enzo", img: "img/ENZO-FERNANDEZ-FRENTE.png" },
+  { id: "enzo", name: "Enzo Fernández", img: "img/ENZO-FERNANDEZ-FRENTE.png" },
   {
     id: "macallister",
     name: "Mac Allister",
@@ -41,17 +45,21 @@ const PLAYERS = [
   { id: "paredes", name: "Paredes", img: "img/PAREDES-FRENTE.png" },
   { id: "messi", name: "Messi", img: "img/MESSI-FRENTE.png" },
   { id: "lautaro", name: "Lautaro", img: "img/LAUTARO-MARTINEZ-FRENTE.png" },
-  { id: "julian", name: "J. Álvarez", img: "img/JULIAN-ALVAREZ-FRENTE.png" },
+  {
+    id: "julian",
+    name: "Julián Álvarez",
+    img: "img/JULIAN-ALVAREZ-FRENTE.png",
+  },
   {
     id: "nicogonzalez",
-    name: "N. González",
+    name: "Nicolás González",
     img: "img/NICO-GONZALEZ-FRENTE.png",
   },
   { id: "flaco", name: "Flaco López", img: "img/FLACO-LOPEZ-FRENTE.png" },
   { id: "simeone", name: "Simeone", img: "img/GIULIANO-SIMEONE-FRENTE.png" },
   { id: "nicopaz", name: "Nico Paz", img: "img/NICO-PAZ-FRENTE.png" },
-  { id: "almada", name: "Almada", img: "img/THIAGO-ALMADA-FRENTE.png" },
-  { id: "barco", name: "Barco", img: "img/VALENTIN-BARCO-FRENTE.png" },
+  { id: "almada", name: "Thiago Almada", img: "img/THIAGO-ALMADA-FRENTE.png" },
+  { id: "barco", name: "Valentín Barco", img: "img/VALENTIN-BARCO-FRENTE.png" },
 ];
 
 if (PLAYERS.length !== 26)

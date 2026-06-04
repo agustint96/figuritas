@@ -400,6 +400,15 @@ h1 {
   }
 }
 
+.letra-blanca {
+  color: white;
+}
+
+.letra-chica {
+  font-size: 1.1rem;
+  color: #95c8ee;
+}
+
 /* ----------------------------------------
    RESPONSIVE
 ---------------------------------------- */
@@ -425,6 +434,10 @@ h1 {
   h1 {
     font-size: 1.1rem;
     text-align: center;
+  }
+
+  .letra-chica {
+    font-size: 0.8rem;
   }
 
   #grid {
@@ -467,8 +480,4 @@ h1 {
   .rank-date {
     display: none;
   }
-}
-
-.letra-blanca {
-  color: white;
 }

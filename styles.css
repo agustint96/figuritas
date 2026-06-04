@@ -339,6 +339,8 @@ h1 {
 }
 
 .rank-pos {
+  color: #ffe484;
+  font-weight: 700;
   font-size: 1.2rem;
   text-align: center;
 }

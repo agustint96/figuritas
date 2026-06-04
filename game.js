@@ -98,7 +98,7 @@ async function getPiano() {
     _piano = new Tone.PolySynth(Tone.Synth, {
       oscillator: { type: "sine" },
       envelope: { attack: 0.005, decay: 0.8, sustain: 0.1, release: 0.6 },
-      volume: -31,
+      volume: -28,
     }).connect(vibrato);
   }
   return _piano;
@@ -136,7 +136,8 @@ function playMismatch() {
     ["D4", "F4", "A4"], // Dm octava 4
     ["B3", "D3", "F3", "A4"], // B semidisminuido
     ["E3", "G#3", "B3", "D4"], // E mayor
-    ["A3", "C4", "E4", "A4"], // Am
+    ["A3", "C4", "E4"], // Am
+    ["A3", "C4", "E4"], // Am
   ];
   const chord = chords[misses % chords.length];
   misses++;
@@ -542,3 +543,36 @@ document.addEventListener(
 })();
 
 // Footer mobile: siempre visible en pantallas chicas, no requiere lógica extra.
+
+// ── Animación flip en G, R, T del título ────────────────────────────────────
+(function () {
+  const wraps = document.querySelectorAll(".titulo-flip-wrap");
+  if (!wraps.length) return;
+
+  function triggerFlip(wrap) {
+    if (wrap.classList.contains("flipping")) return;
+    wrap.classList.add("flipping");
+    wrap.addEventListener(
+      "animationend",
+      () => wrap.classList.remove("flipping"),
+      { once: true },
+    );
+  }
+
+  wraps.forEach((wrap) => {
+    let hoverDone = false;
+
+    wrap.addEventListener("mouseenter", function onFirstHover() {
+      if (!hoverDone) {
+        hoverDone = true;
+        triggerFlip(wrap);
+      }
+      wrap.removeEventListener("mouseenter", onFirstHover);
+    });
+
+    wrap.addEventListener("click", (e) => {
+      e.stopPropagation();
+      triggerFlip(wrap);
+    });
+  });
+})();

@@ -262,7 +262,7 @@ window.saveScore = async function () {
   btn.disabled = true;
   document.getElementById("save-feedback").textContent = "Guardando...";
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from("scores")
     .insert([{ nombre, intentos: tries }]);
 
@@ -285,7 +285,7 @@ window.showRanking = async function () {
   document.getElementById("ranking-overlay").style.display = "flex";
   document.getElementById("ranking-list").innerHTML = "Cargando...";
 
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from("scores")
     .select("nombre, intentos, created_at")
     .order("intentos", { ascending: true })

@@ -507,3 +507,37 @@ document.addEventListener(
   },
   true,
 );
+
+// ── Widget redes sociales (solo desktop) ──────────────────────────
+(function () {
+  const icons = document.getElementById("social-icons");
+  if (!icons) return;
+
+  let hideTimer = null;
+
+  function show() {
+    clearTimeout(hideTimer);
+    icons.classList.add("visible");
+  }
+
+  function hide() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => icons.classList.remove("visible"), 400);
+  }
+
+  // Detectar proximidad a la esquina inferior derecha
+  document.addEventListener("mousemove", function (e) {
+    const fromRight = window.innerWidth - e.clientX;
+    const fromBottom = window.innerHeight - e.clientY;
+    if (fromRight < 140 && fromBottom < 140) {
+      show();
+    } else if (!icons.matches(":hover")) {
+      hide();
+    }
+  });
+
+  icons.addEventListener("mouseenter", show);
+  icons.addEventListener("mouseleave", hide);
+})();
+
+// Footer mobile: siempre visible en pantallas chicas, no requiere lógica extra.

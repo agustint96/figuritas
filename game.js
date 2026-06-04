@@ -435,7 +435,7 @@ window.showRanking = async function () {
 
   if (data.length === 0) {
     document.getElementById("ranking-list").innerHTML =
-      "<p>Aún no hay puntajes. ¡Sé el primero!</p>";
+      "<p style='color: #fefdfe;'>Aún no hay puntajes. ¡Sé el primero!</p>";
     return;
   }
 

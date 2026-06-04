@@ -177,18 +177,9 @@ function animateShuffle(container) {
 }
 
 function handleMatch(aWrap, bWrap, aIdx, bIdx) {
-  aWrap.classList.add("match-anim");
-  bWrap.classList.add("match-anim");
-
   const timeoutId = setTimeout(() => {
-    if (aWrap.parentNode) {
-      const slotParent = aWrap.parentNode;
-      if (slotParent.parentNode) slotParent.parentNode.removeChild(slotParent);
-    }
-    if (bWrap.parentNode) {
-      const slotParent = bWrap.parentNode;
-      if (slotParent.parentNode) slotParent.parentNode.removeChild(slotParent);
-    }
+    aWrap.classList.add("matched");
+    bWrap.classList.add("matched");
 
     matched++;
     document.getElementById("pairs").textContent = matched;
@@ -198,7 +189,7 @@ function handleMatch(aWrap, bWrap, aIdx, bIdx) {
     if (matched === 9) {
       showWinModal();
     }
-  }, 430);
+  }, 300);
 
   timeouts.push(timeoutId);
 }

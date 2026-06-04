@@ -150,10 +150,11 @@ h1 {
 .card-wrap.matched {
   pointer-events: none;
   transition:
-    filter 0.4s ease,
-    opacity 0.4s ease;
+    filter 1.5s ease,
+    opacity 1.5s ease;
   filter: grayscale(100%);
-  opacity: 0.5;
+  opacity: 0.35;
+  cursor: default;
 }
 
 /* ----------------------------------------

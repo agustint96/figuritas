@@ -255,6 +255,21 @@ h1 {
   color: #ffbc42;
 }
 
+#ranking-modal #btn-ranking-close {
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  display: inline;
+  margin: 0;
+}
+
+#ranking-modal #btn-ranking-close:hover {
+  color: #ffbc42;
+  border-color: transparent;
+}
+
 #btn-save-score {
   background: linear-gradient(120deg, #ffbc42, #ffe484);
   color: #0a1a2a;
@@ -302,6 +317,7 @@ h1 {
    RANKING MODAL
 ---------------------------------------- */
 #ranking-modal {
+  position: relative;
   background: linear-gradient(160deg, #0d2135 0%, #071320 100%);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px;

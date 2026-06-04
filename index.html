@@ -78,6 +78,24 @@
     <!-- Modal de ranking -->
     <div id="ranking-overlay" style="display: none">
       <div id="ranking-modal">
+        <button
+          onclick="closeRanking()"
+          id="btn-ranking-close"
+          style="
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            background: transparent;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+          "
+          aria-label="Cerrar"
+        >
+          &#x2715;
+        </button>
         <h2>🏆 Mejores puntajes</h2>
         <div id="ranking-list">Cargando...</div>
         <button onclick="closeRanking()">Cerrar</button>

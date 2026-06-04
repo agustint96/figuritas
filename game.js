@@ -448,7 +448,7 @@ window.showRanking = async function () {
     .from("scores")
     .select("nombre, intentos, created_at")
     .order("intentos", { ascending: true })
-    .limit(15);
+    .limit(100);
 
   if (error || !data) {
     document.getElementById("ranking-list").innerHTML =

@@ -578,6 +578,69 @@ h1 {
   }
 }
 
+/* ----------------------------------------
+   MESSI PEEK - esquina inferior izquierda
+---------------------------------------- */
+#messi-peek {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 95px;
+  z-index: 199;
+  pointer-events: all;
+  will-change: transform;
+}
+
+#messi-img {
+  width: 100%;
+  display: block;
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  filter: drop-shadow(0 -4px 16px rgba(0, 0, 0, 0.7));
+}
+
+#messi-peek.visible #messi-img {
+  transform: translateY(11%);
+}
+
+#messi-bobo {
+  position: absolute;
+  bottom: 52px;
+  left: 46px;
+  width: 91px;
+  opacity: 0;
+  transform: scale(0.7);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+}
+
+#messi-peek.bobo-visible #messi-bobo {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 750px) {
+  #messi-peek {
+    width: 13vw; /* ~95px en 1200px → proporcional en mobile */
+    min-width: 52px; /* piso para pantallas muy chicas */
+    max-width: 80px;
+    pointer-events: none; /* no interfiere con el grid mientras está oculto */
+  }
+  #messi-peek.visible {
+    pointer-events: all;
+  }
+  #messi-bobo {
+    width: 12.5vw;
+    min-width: 60px;
+    max-width: 95px;
+    left: 52%; /* se mantiene a la derecha de messi relativo a su ancho */
+    bottom: 45%;
+  }
+}
+
 @media (max-width: 750px) {
   body {
     min-height: 100dvh;

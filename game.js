@@ -545,6 +545,72 @@ document.addEventListener(
 
 // Footer mobile: siempre visible en pantallas chicas, no requiere lógica extra.
 
+// ── Messi asomándose en esquina inferior izquierda ───────────────────────────
+(function () {
+  const messi = document.createElement("div");
+  messi.id = "messi-peek";
+  messi.innerHTML = `
+    <img id="messi-img" src="img/messi_asomandose.png" alt="Messi" draggable="false">
+    <img id="messi-bobo" src="img/bobo.png" alt="¿Qué mirá bobo?" draggable="false">
+  `;
+  document.body.appendChild(messi);
+
+  let hideTimer = null;
+  let visible = false;
+
+  function show() {
+    clearTimeout(hideTimer);
+    if (!visible) {
+      visible = true;
+      messi.classList.add("visible");
+      setTimeout(() => messi.classList.add("bobo-visible"), 350);
+    }
+  }
+
+  function hide() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      visible = false;
+      messi.classList.remove("visible");
+      messi.classList.remove("bobo-visible");
+    }, 80);
+  }
+
+  const isMobile = () => window.innerWidth <= 750;
+
+  // Desktop: aparece al acercar el mouse a la esquina inferior izquierda
+  document.addEventListener("mousemove", function (e) {
+    if (isMobile()) return;
+    const fromLeft = e.clientX;
+    const fromBottom = window.innerHeight - e.clientY;
+    if (fromLeft < 180 && fromBottom < 180) {
+      show();
+    } else if (!messi.matches(":hover")) {
+      hide();
+    }
+  });
+
+  messi.addEventListener("mouseenter", () => { if (!isMobile()) show(); });
+  messi.addEventListener("mouseleave", () => { if (!isMobile()) hide(); });
+
+  // Mobile: aparece cuando el footer entra en pantalla
+  const footer = document.getElementById("mobile-footer");
+  if (footer && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!isMobile()) return;
+        if (entries[0].isIntersecting) {
+          show();
+        } else {
+          hide();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(footer);
+  }
+})();
+
 // ── Animación flip en G, R, T del título ────────────────────────────────────
 (function () {
   const wraps = document.querySelectorAll(".titulo-flip-wrap");

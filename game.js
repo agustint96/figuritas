@@ -60,9 +60,15 @@ const PLAYERS = [
   { id: "nicopaz", name: "Nico Paz", img: "img/NICO-PAZ-FRENTE.png" },
   { id: "almada", name: "Thiago Almada", img: "img/THIAGO-ALMADA-FRENTE.png" },
   { id: "barco", name: "Valentín Barco", img: "img/VALENTIN-BARCO-FRENTE.png" },
+  {
+    id: "maradona",
+    name: "Maradona",
+    img: "img/MARADONA-FRENTE.png",
+    bonusTries: -3,
+  },
 ];
 
-if (PLAYERS.length !== 26)
+if (PLAYERS.length !== 27)
   console.warn("Cantidad de jugadores:", PLAYERS.length);
 
 // Variables globales del juego
@@ -123,6 +129,20 @@ function playMatch() {
       { note: lastNote, delay: 980 },
     ].forEach(({ note, delay }) =>
       setTimeout(() => piano.triggerAttackRelease(note, "32n"), delay),
+    );
+  });
+}
+
+// Arpegio especial para Maradona: C E C G (blancas)
+function playMaradona() {
+  getPiano().then((piano) => {
+    [
+      { note: "C5", delay: 0 },
+      { note: "E5", delay: 340 },
+      { note: "C5", delay: 680 },
+      { note: "G5", delay: 1020 },
+    ].forEach(({ note, delay }) =>
+      setTimeout(() => piano.triggerAttackRelease(note, "4n"), delay),
     );
   });
 }
@@ -291,25 +311,40 @@ function handleMatch(aWrap, bWrap, aIdx, bIdx) {
   const timeoutId = setTimeout(() => {
     aWrap.classList.add("matched");
     bWrap.classList.add("matched");
-    playMatch();
+
+    const playerData = cards[aIdx];
+    if (playerData.bonusTries) {
+      playMaradona();
+    } else {
+      playMatch();
+    }
 
     matched++;
     document.getElementById("pairs").textContent = matched;
     flipped = [];
     locked = false;
-
-    const playerName = cards[aIdx].name;
+    const playerName = playerData.name;
     const footer = document.getElementById("match-footer");
     footer.innerHTML = "";
+
+    // Bonus especial para Maradona: restar 3 intentos
+    let matchMessage = `Encontraste a ${playerName} :)`;
+    if (playerData.bonusTries) {
+      const bonus = Math.abs(playerData.bonusTries);
+      tries = Math.max(0, tries + playerData.bonusTries);
+      document.getElementById("tries").textContent = tries;
+      matchMessage = `Encontraste al <span style="color:#ffe484">Diego</span>. ¡Resta ${bonus} intentos!`;
+    }
 
     if (window._matchTyped) {
       window._matchTyped.destroy();
     }
 
     window._matchTyped = new Typed(footer, {
-      strings: [`Encontraste a ${playerName} :)`],
+      strings: [matchMessage],
       typeSpeed: 38,
       showCursor: false,
+      contentType: "html",
       onComplete: () => {
         setTimeout(() => {
           footer.style.transition = "opacity 0.6s";
@@ -405,7 +440,7 @@ window.saveScore = async function () {
   }
 
   // Validación anti-trampa: mínimo teórico = 9 pares, máximo razonable = 999
-  const MIN_TRIES = 9; // imposible ganar en menos de 9 intentos (9 pares)
+  const MIN_TRIES = 6; // mínimo teórico: 9 pares pero Maradona puede restar 3 intentos
   const MAX_TRIES = 999;
   if (tries < MIN_TRIES || tries > MAX_TRIES || !Number.isInteger(tries)) {
     document.getElementById("save-feedback").textContent = "Puntaje inválido.";
@@ -590,8 +625,12 @@ document.addEventListener(
     }
   });
 
-  messi.addEventListener("mouseenter", () => { if (!isMobile()) show(); });
-  messi.addEventListener("mouseleave", () => { if (!isMobile()) hide(); });
+  messi.addEventListener("mouseenter", () => {
+    if (!isMobile()) show();
+  });
+  messi.addEventListener("mouseleave", () => {
+    if (!isMobile()) hide();
+  });
 
   // Mobile: aparece cuando el footer está bien visible, se va solo después de unos segundos
   const footer = document.getElementById("mobile-footer");
@@ -619,7 +658,7 @@ document.addEventListener(
           hide();
         }
       },
-      { threshold: 0.8 } // necesita estar bien visible (80%) para disparar
+      { threshold: 0.8 }, // necesita estar bien visible (80%) para disparar
     );
     observer.observe(footer);
   }

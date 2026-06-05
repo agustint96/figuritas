@@ -632,36 +632,25 @@ document.addEventListener(
     if (!isMobile()) hide();
   });
 
-  // Mobile: aparece cuando el footer está bien visible, se va solo después de unos segundos
-  const footer = document.getElementById("mobile-footer");
-  if (footer && "IntersectionObserver" in window) {
-    let messiAutoHide = null;
-    let messiShownThisVisit = false;
+  // Mobile: aparece solo con overscroll real (scroll más allá del fondo de la página)
+  let messiAutoHide = null;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!isMobile()) return;
-        if (entries[0].isIntersecting) {
-          if (!messiShownThisVisit) {
-            messiShownThisVisit = true;
-            show();
-            // Auto-hide después de 2.5 segundos
-            clearTimeout(messiAutoHide);
-            messiAutoHide = setTimeout(() => {
-              hide();
-            }, 2500);
-          }
-        } else {
-          // Cuando el footer sale de pantalla, reseteamos para que pueda volver a aparecer
-          clearTimeout(messiAutoHide);
-          messiShownThisVisit = false;
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!isMobile()) return;
+      const scrolledPast =
+        window.scrollY + window.innerHeight - document.body.scrollHeight;
+      if (scrolledPast > 20) {
+        show();
+        clearTimeout(messiAutoHide);
+        messiAutoHide = setTimeout(() => {
           hide();
-        }
-      },
-      { threshold: 0.8 }, // necesita estar bien visible (80%) para disparar
-    );
-    observer.observe(footer);
-  }
+        }, 3500);
+      }
+    },
+    { passive: true },
+  );
 })();
 
 // ── Animación flip en G, R, T del título ────────────────────────────────────

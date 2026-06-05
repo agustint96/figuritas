@@ -230,6 +230,7 @@ window.initGame = function () {
     wrapDiv.className = "card-wrap";
     wrapDiv.style.setProperty("--rot", rot + "deg");
     wrapDiv.setAttribute("data-idx", positionIdx);
+    if (card.id === "maradona") wrapDiv.setAttribute("data-id", "maradona");
     wrapDiv.innerHTML = `
       <div class="card-inner">
         <div class="face face-back"><img src="${DORSO}" alt="dorso" loading="lazy"></div>
@@ -380,9 +381,17 @@ function handleMismatch(aWrap, bWrap) {
 function onCardClick(wrapElement, idx) {
   if (locked) return;
   if (!wrapElement || !wrapElement.parentNode) return;
-  if (wrapElement.classList.contains("flipped")) return;
   if (wrapElement.classList.contains("match-anim")) return;
   if (flipped.length >= 2) return;
+
+  // Si ya está volteada y es la primera carta (todavía no elegiste la segunda), la des-volteás
+  if (wrapElement.classList.contains("flipped")) {
+    if (flipped.length === 1 && flipped[0].wrap === wrapElement) {
+      wrapElement.classList.remove("flipped");
+      flipped = [];
+    }
+    return;
+  }
 
   wrapElement.classList.add("flipped");
   playFlip(flipped.length === 0 ? "C5" : "B4");

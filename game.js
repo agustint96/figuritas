@@ -593,19 +593,33 @@ document.addEventListener(
   messi.addEventListener("mouseenter", () => { if (!isMobile()) show(); });
   messi.addEventListener("mouseleave", () => { if (!isMobile()) hide(); });
 
-  // Mobile: aparece cuando el footer entra en pantalla
+  // Mobile: aparece cuando el footer está bien visible, se va solo después de unos segundos
   const footer = document.getElementById("mobile-footer");
   if (footer && "IntersectionObserver" in window) {
+    let messiAutoHide = null;
+    let messiShownThisVisit = false;
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (!isMobile()) return;
         if (entries[0].isIntersecting) {
-          show();
+          if (!messiShownThisVisit) {
+            messiShownThisVisit = true;
+            show();
+            // Auto-hide después de 2.5 segundos
+            clearTimeout(messiAutoHide);
+            messiAutoHide = setTimeout(() => {
+              hide();
+            }, 2500);
+          }
         } else {
+          // Cuando el footer sale de pantalla, reseteamos para que pueda volver a aparecer
+          clearTimeout(messiAutoHide);
+          messiShownThisVisit = false;
           hide();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.8 } // necesita estar bien visible (80%) para disparar
     );
     observer.observe(footer);
   }

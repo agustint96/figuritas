@@ -384,7 +384,7 @@ function onCardClick(wrapElement, idx) {
   if (wrapElement.classList.contains("match-anim")) return;
   if (flipped.length >= 2) return;
 
-  // Si ya está volteada y es la primera carta (todavía no elegiste la segunda), la des-volteás
+  // Si ya está volteada y es la primera carta, permitir des-voltear (pero el intento ya fue contado)
   if (wrapElement.classList.contains("flipped")) {
     if (flipped.length === 1 && flipped[0].wrap === wrapElement) {
       wrapElement.classList.remove("flipped");
@@ -393,14 +393,18 @@ function onCardClick(wrapElement, idx) {
     return;
   }
 
+  // Contar el intento al voltear la primera carta
+  if (flipped.length === 0) {
+    tries++;
+    document.getElementById("tries").textContent = tries;
+  }
+
   wrapElement.classList.add("flipped");
   playFlip(flipped.length === 0 ? "C5" : "B4");
   flipped.push({ wrap: wrapElement, idx: idx });
 
   if (flipped.length === 2) {
     locked = true;
-    tries++;
-    document.getElementById("tries").textContent = tries;
 
     const cardA = cards[flipped[0].idx];
     const cardB = cards[flipped[1].idx];

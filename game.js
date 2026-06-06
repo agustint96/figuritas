@@ -541,6 +541,13 @@ window.addEventListener("DOMContentLoaded", () => {
   initGame();
 });
 
+// Cerrar ranking al hacer click fuera del modal
+document
+  .getElementById("ranking-overlay")
+  .addEventListener("click", function (e) {
+    if (e.target === this) closeRanking();
+  });
+
 document.addEventListener(
   "error",
   (e) => {

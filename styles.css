@@ -338,8 +338,26 @@ h1 {
   max-width: 480px;
   width: 92%;
   max-height: 80vh;
-  overflow-y: auto;
+  overflow: hidden;
   animation: bouncePop 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar personalizada del ranking */
+#ranking-list::-webkit-scrollbar {
+  width: 6px;
+}
+#ranking-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+}
+#ranking-list::-webkit-scrollbar-thumb {
+  background: rgba(149, 200, 238, 0.35);
+  border-radius: 10px;
+}
+#ranking-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(149, 200, 238, 0.6);
 }
 
 #ranking-modal h2 {
@@ -350,10 +368,13 @@ h1 {
 }
 
 #ranking-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 24px;
 }
 
 .rank-row {
@@ -396,28 +417,7 @@ h1 {
   white-space: nowrap;
 }
 
-#ranking-modal button {
-  display: block;
-  margin: 0 auto;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 40px;
-  color: rgba(255, 255, 255, 0.7);
-  padding: 8px 28px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-#ranking-modal button:hover {
-  border-color: #fff;
-  color: #fff;
-}
-
-/* ----------------------------------------
-   ANIMATIONS
----------------------------------------- */
-@keyframes bouncePop {
+---------------------------------------- */ @keyframes bouncePop {
   0% {
     transform: scale(0.85);
     opacity: 0;
